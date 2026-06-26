@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"><title>FARHAN VIP TEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+/* Login & UID Overlays */
+#login-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 1000; display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
+#uid-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+.box { width: 85%; max-width: 350px; height: 75px; border-radius: 20px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; font-family: 'Orbitron'; font-weight: bold; border: 2px solid; }
+.vip-box { border: 3px solid #ff0000; box-shadow: 0 0 25px #ff0000; color: #ff0000; font-size: 20px; text-transform: uppercase; margin-bottom: 25px; }
+.join-box { border: 2px solid #00ff00; box-shadow: 0 0 15px #00ff00; color: #00ff00; cursor: pointer; font-size: 18px; margin-bottom: 30px; }
+#login-overlay input, #uid-overlay input { background: #111; border: 2px solid #ff0000; color: #fff; padding: 15px; border-radius: 15px; margin-bottom: 20px; width: 80%; max-width: 300px; text-align: center; font-size: 16px; outline: none; }
+#login-overlay button, #uid-overlay button { background: #fff; color: #000; border: none; padding: 15px 60px; border-radius: 15px; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; font-size: 18px; }
+.neon-title { font-family: 'Orbitron'; font-size: 22px; color: #00eaff; text-shadow: 0 0 10px #00eaff; margin-bottom: 30px; text-transform: uppercase; }
+
+/* Dashboard Styles */
+html,body{height:100%;width:100%;background:#000;margin:0;padding:0;font-family:'Rajdhani',sans-serif;color:#ffd700;overflow:hidden;}
+#app{height:100%;display:none;}
+.custom-header { width: 100%; padding: 15px 0; text-align: center; background: #0a0515; border-bottom: 2px solid #333; }
+.main-name { font-family: 'Orbitron'; font-weight: 900; font-size: 28px; color: #00eaff; text-shadow: 0 0 6px rgba(255, 255, 255, 0.5); text-transform: uppercase; margin: 0; letter-spacing: 2px; }
+.wp-num { font-family: 'Rajdhani'; font-size: 16px; color: #fff; margin-top: 4px; }
+.abox{display:flex;flex-direction:column;height:calc(100% - 130px);padding:15px;max-width:400px;margin:0 auto;}
+.tabs{display:flex;gap:10px;margin-bottom:15px;}
+.tab{flex:1;padding:12px;background:#110022;border:1px solid #5500aa;color:#d699ff;border-radius:6px;text-align:center;font-family:'Orbitron';font-size:12px;cursor:pointer;}
+.tab.active{background:linear-gradient(135deg,#bd00ff,#00eaff);color:#fff;border:none;box-shadow:0 0 25px #bd00ff;font-weight:bold;}
+
+/* Main Card */
+.card{background:rgba(10,5,20,0.95);border:2px solid #ffd700;border-radius:15px;padding:20px;text-align:center;box-shadow:0 0 30px rgba(255,215,0,0.15);margin-bottom:15px; position:relative; overflow:hidden; height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.timer{font-size:55px;font-weight:900;color:#fff;font-family:'Orbitron'; transition: 0.3s; line-height: 1;}
+.period{color:#00eaff;font-size:13px;font-family:'Orbitron';margin-bottom:5px;}
+.ptxt{font-size:50px;font-weight:900;font-family:'Orbitron';margin:5px 0;text-transform:uppercase;color:#00eaff;}
+.blur-box { filter: blur(4px); opacity: 0.4; }
+
+/* Fitted Timer Alert */
+.timer-fit { font-size: 70px !important; position: absolute; }
+
+/* Alert */
+#trade-alert { position: absolute; top: 30%; right: -100%; width: 100%; height: 60px; background: rgba(0, 0, 0, 0.95); border: 2px solid #0f0; box-shadow: 0 0 20px #0f0; color: #fff; font-family: 'Orbitron'; font-size: 18px; display: flex; align-items: center; justify-content: center; z-index: 30; transition: 0.8s; }
+.animate-slide { animation: slideProcess 4s forwards; }
+@keyframes slideProcess { 0% { right: -100%; } 40% { right: 0%; } 70% { right: 0%; } 100% { right: 100%; } }
+
+.hbox{flex-grow:1;background:#000;border:1px solid #330044;border-radius:10px;overflow-y:auto;display:flex;flex-direction:column;}
+.hhead{display:flex;background:#1a0522;padding:10px;color:#ffd700;font-family:'Orbitron';font-size:10px;font-weight:bold;border-bottom:1px solid #bd00ff; position: sticky; top: 0;}
+.row{display:flex;padding:10px;border-bottom:1px solid #220033;font-size:11px;align-items:center;}
+.col{flex:1;text-align:center;color:#ccc;}
+.win{color:#0f0;font-weight:bold;}
+.loss{color:#f05;font-weight:bold;}
+</style>
+</head>
+<body>
+  <div id="login-overlay"><div class="box vip-box">FARHAN VIP TEAM</div><div class="box join-box" onclick="window.open('https://whatsapp.com/channel/0029VbAydkC42DcYD0Axzr3Q', '_blank')">JOIN CHANNEL</div><input type="password" id="pass" placeholder="Enter Password"><button onclick="checkPass()">START</button></div>
+  <div id="uid-overlay"><div class="neon-title">ENTER YOUR GAME UID</div><input type="text" id="game-uid" placeholder="Game UID"><button onclick="goToMain()">NEXT</button></div>
+  <div id="app">
+    <div class="custom-header"><h1 class="main-name">FARHAN TRADER</h1><div class="wp-num">WhatsApp: 03293036312</div></div>
+    <div class="abox">
+      <div style="text-align: right;"><button onclick="clr()" style="font-size:12px; background:#330000; color:#ff0000; border:1px solid #ff0000; padding:5px 15px; border-radius:5px; cursor:pointer;">CLEAN</button></div>
+      <div class="tabs"><div id="t30" class="tab active" onclick="setMode('30S')">WinGo 30S</div><div id="t60" class="tab" onclick="setMode('1M')">WinGo 1M</div></div>
+      <div class="card" id="main-card">
+        <div id="trade-alert"></div>
+        <div id="pid" class="period">SYNCING...</div>
+        <div id="tmr" class="timer">00:00</div>
+        <div id="pbx" class="ptxt">--</div>
+      </div>
+      <div class="hbox"><div class="hhead"><div class="col">PERIOD</div><div class="col">PRED</div><div class="col">RES</div><div class="col">STATUS</div></div><div id="hl"></div></div>
+    </div>
+  </div>
+<script>
+let stage = 1, winStreak = 0; let dataStore = { '30S': { history: [], lastP: "", lastR: "" }, '1M': { history: [], lastP: "", lastR: "" } };
+let currentMode = '30S';
+function checkPass(){ if(document.getElementById('pass').value === "Farhan786"){ document.getElementById('login-overlay').style.display = 'none'; document.getElementById('uid-overlay').style.display = 'flex'; } else { alert("Wrong Password!"); } }
+function goToMain(){ if(document.getElementById('game-uid').value.length === 6){ document.getElementById('uid-overlay').style.display = 'none'; document.getElementById('app').style.display = 'block'; } else { alert("Wrong UID!"); } }
+function showTradeAlert(msg) { const alertBox = document.getElementById('trade-alert'); alertBox.innerText = msg; alertBox.classList.add('animate-slide'); setTimeout(() => { alertBox.classList.remove('animate-slide'); }, 4000); }
+function setMode(m){ currentMode = m; document.getElementById('t30').className = (m === '30S') ? 'tab active' : 'tab'; document.getElementById('t60').className = (m === '1M') ? 'tab active' : 'tab'; renderHistory(); _sy(); }
+async function _sy(){
+    try{
+        const r = await fetch((currentMode === '30S' ? 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json' : 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json') + "?t=" + Date.now());
+        const d = await r.json();
+        const list = d.data.list; const latest = list[0];
+        let trend = null; if(list.length >= 4) { let last3 = list.slice(1, 4).map(i => parseInt(i.number) >= 5 ? 'BIG' : 'SMALL'); if(last3.every(val => val === last3[0])) trend = last3[0]; }
+        const currentP = (BigInt(latest.issueNumber) + 1n).toString();
+        if(dataStore[currentMode].lastP !== "" && dataStore[currentMode].lastP !== currentP){
+            const finished = list[0]; const res = (parseInt(finished.number) >= 5) ? 'BIG' : 'SMALL';
+            const isWin = (dataStore[currentMode].lastR === res);
+            if(isWin) { winStreak++; stage = 1; showTradeAlert(winStreak > 1 ? `BACK-TO-BACK ${winStreak} WIN` : "WIN: ALL STAGES DONE"); }
+            else { winStreak = 0; stage++; showTradeAlert(`STAGE ${stage}: ${parseInt(latest.number) % 2 === 0 ? "BIG " : "SMALL "}${stage}X`); }
+            dataStore[currentMode].history.unshift({ p: dataStore[currentMode].lastP.slice(-3), r: dataStore[currentMode].lastR, res: res, status: isWin ? 'WIN' : 'LOSS' });
+            if(dataStore[currentMode].history.length > 10) dataStore[currentMode].history.pop();
+            renderHistory(); if(isWin) confetti();
+        }
+        dataStore[currentMode].lastP = currentP; dataStore[currentMode].lastR = trend ? trend : (parseInt(latest.number) % 2 === 0 ? 'BIG' : 'SMALL');
+        document.getElementById('pid').innerHTML = `PERIOD: ${currentP.slice(-3)}`; document.getElementById('pbx').innerText = dataStore[currentMode].lastR;
+    }catch(e){}
+}
+function renderHistory(){ document.getElementById('hl').innerHTML = dataStore[currentMode].history.map(item => `<div class="row"><div class="col">${item.p}</div><div class="col">${item.r}</div><div class="col">${item.res}</div><div class="col ${item.status === 'WIN' ? 'win' : 'loss'}">${item.status}</div></div>`).join(''); }
+function clr(){ dataStore[currentMode].history = []; renderHistory(); }
+setInterval(()=>{
+    const s = (currentMode === '30S' ? 30 : 60) - (new Date().getSeconds() % (currentMode === '30S' ? 30 : 60));
+    if (s <= 5 && s > 0) { document.getElementById('tmr').innerText = "0" + s; document.getElementById('tmr').classList.add('timer-fit'); document.getElementById('pid').classList.add('blur-box'); document.getElementById('pbx').classList.add('blur-box'); }
+    else { document.getElementById('tmr').innerText = "00:" + (s < 10 ? "0"+s : s); document.getElementById('tmr').classList.remove('timer-fit'); document.getElementById('pid').classList.remove('blur-box'); document.getElementById('pbx').classList.remove('blur-box'); }
+    if(s === 1) _sy();
+}, 1000);
+_sy();
+</script>
+</body>
+</html>
